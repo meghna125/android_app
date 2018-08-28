@@ -1,5 +1,6 @@
 package com.meghna125.firebasedemo;
 
+import java.lang.ref.SoftReference;
 import java.lang.reflect.Constructor;
 
 /**
@@ -11,11 +12,13 @@ public class Customer {
     private String userName;
     private String email;
     private String password;
+    private String Image;
 
     public Customer() {
     }
 
-    public Customer(String userName, String email,String password) {
+    public Customer(String userName, String email,String password,String Image) {
+        this.Image=Image;
         this.userName=userName;
         this.email = email;
         this.password = password;
@@ -46,4 +49,8 @@ public class Customer {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getImage() { return Image; }
+
+    public void setImage(String Image) { this.Image = Image; }
 }
