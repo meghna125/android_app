@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         signUp = (Button) findViewById(R.id.signup);
 
 
+        
+        // Sheetal changes | Please add comments so that you can understand later what this code do. thank you.
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
