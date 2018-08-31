@@ -31,7 +31,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    // hello
+    // hello world
 
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
