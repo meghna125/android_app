@@ -31,6 +31,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class MainActivity extends AppCompatActivity {
 
+    // hello
+
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
@@ -47,17 +49,16 @@ public class MainActivity extends AppCompatActivity {
     private StorageReference mFirebaseStorage;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        username = (EditText)findViewById(R.id.username);
+        username = (EditText) findViewById(R.id.username);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         signUp = (Button) findViewById(R.id.signup);
-        profilePic = (ImageButton)findViewById(R.id.profilePic);
+        profilePic = (ImageButton) findViewById(R.id.profilePic);
 
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,20 +67,21 @@ public class MainActivity extends AppCompatActivity {
                 Intent galleryIntent = new Intent();
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent,GALLERY_CODE);
+                startActivityForResult(galleryIntent, GALLERY_CODE);
             }
         });
 
 
-        
         // Sheetal changes | Please add comments so that you can understand later what this code do. thank you.
+
+        // tune upgrade kiya hai project?
+        //maine kiya tha pr changes show nhi ho rhe github pr
+        // okay dekhta hu
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("User");
         mFirebaseStorage = FirebaseStorage.getInstance().getReference().child("User_profile_pics");
-
-
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 mUser = firebaseAuth.getCurrentUser();
                 if (mUser != null) {
                     //user signed in
-                    Log.d(TAG,"user signed in");
+                    Log.d(TAG, "user signed in");
                 } else {
                     //user signed out
                     Log.d(TAG, "user signed out");
@@ -140,48 +142,44 @@ public class MainActivity extends AppCompatActivity {
                 final String user = username.getText().toString();
 
 
-
                 if (!emailString.equals("") && !pwd.equals("") && !user.equals("")) {
                     mAuth.createUserWithEmailAndPassword(emailString, pwd).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
 
-                           if(authResult!=null){
+                            if (authResult != null) {
 
 
-                                Toast.makeText(MainActivity.this,"Account Created!",Toast.LENGTH_LONG).show();
-                               StorageReference imagePath =  mFirebaseStorage.child("User_Profile_pics")
-                                       .child(resultUri.getLastPathSegment());
+                                Toast.makeText(MainActivity.this, "Account Created!", Toast.LENGTH_LONG).show();
+                                StorageReference imagePath = mFirebaseStorage.child("User_Profile_pics")
+                                        .child(resultUri.getLastPathSegment());
 
-                               imagePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                   @Override
-                                   public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-
-
-                                       Customer customer = new Customer(user,emailString,pwd,resultUri.toString());
-                                       databaseReference.setValue(customer);
+                                imagePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
 
-
-                                   }
-                               });
-
-
-
-                           }
+                                        Customer customer = new Customer(user, emailString, pwd, resultUri.toString());
+                                        databaseReference.setValue(customer);
+                                    }
+                                });
+                            }
+                            sendtonext(); // ab try
 
                         }
                     });
                 }
 
 
-
-
-
             }
         });
 
+    }
+
+    private void sendtonext() {
+        Intent i = new Intent(MainActivity.this, Main2Activity.class);
+        startActivity(i);
+        finish();
     }
 
     @Override
@@ -193,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(mAuthListener!=null){
+        if (mAuthListener != null) {
 
             mAuth.removeAuthStateListener(mAuthListener);
         }
@@ -205,12 +203,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALLERY_CODE && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_CODE && resultCode == RESULT_OK) {
 
             Uri mImageUri = data.getData();
 
             CropImage.activity(mImageUri)
-                    .setAspectRatio(1,1)
+                    .setAspectRatio(1, 1)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .start(this);
 
